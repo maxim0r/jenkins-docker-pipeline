@@ -1,0 +1,19 @@
+version: "2"
+services:
+  appdb:
+    container_name: "database"
+    image: mysql:5.5
+    environment:
+      MYSQL_ROOT_PASSWORD: qwerty123
+      MYSQL_DATABASE: gojidb
+      MYSQL_USER: goji
+      MYSQL_PASSWORD: goji123
+  webapp:
+    container_name: "webapp"
+    image: maxor/goji_webapp
+    depends_on:
+      - appdb
+    ports:
+      - 8000:8000
+    links:
+      - appdb

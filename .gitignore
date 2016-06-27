@@ -1,0 +1,16 @@
+tmp/
+*/backup/
+backup/
+docker-slave/docker-jnlp-slave/
+jmaster_home/
+jslave_home/
+registry/auth/
+registry/certs/
+registry/data/
+registry/bin/*key
+.env
+
+*.crt
+
+
+

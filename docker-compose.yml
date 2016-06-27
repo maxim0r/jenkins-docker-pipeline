@@ -1,0 +1,45 @@
+version: "2"
+services:
+  jmaster:
+    container_name: jmaster
+    image: jenkinsci/jenkins
+    restart: always
+    ports:
+      - 8080:8080
+    volumes:
+      - ./jmaster_home:/var/jenkins_home
+
+  jslave:
+    container_name: jslave
+    build:
+      context: ./docker-slave
+    links:
+      - jmaster
+      - registry.local
+    depends_on:
+      - jmaster
+    privileged: true
+    restart: always
+    env_file: .env
+    volumes:
+      - ./jslave_home:/home/jenkins
+#      - /var/run/docker.sock:/var/run/docker.sock
+#      - /var/lib/docker:/var/lib/docker
+
+  registry.local:
+    container_name: registry.local
+    restart: always
+    image: registry:2
+    ports:
+      - 5000:5000
+    environment:
+      REGISTRY_HTTP_TLS_CERTIFICATE: /certs/registry.local.crt
+      REGISTRY_HTTP_TLS_KEY: /certs/registry.local.key
+      REGISTRY_AUTH: htpasswd
+      REGISTRY_AUTH_HTPASSWD_PATH: /auth/htpasswd
+      REGISTRY_AUTH_HTPASSWD_REALM: Registry Realm
+    volumes:
+      - ./registry/data:/var/lib/registry
+      - ./registry/certs:/certs
+      - ./registry/auth:/auth
+
