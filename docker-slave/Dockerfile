@@ -47,19 +47,28 @@ RUN update-ca-certificates
 COPY wrapdocker /usr/local/bin/wrapdocker
 RUN chmod 755 /usr/local/bin/wrapdocker
 
+# docker-compose
+
+RUN apk add --update \
+    python \
+    python-dev \
+    py-pip \
+    build-base \
+  && pip install virtualenv \
+  && rm -rf /var/cache/apk/*
+RUN pip install docker-compose
+
+# container
+#RUN curl -L https://github.com/docker/compose/releases/download/1.6.2/run.sh > /usr/local/bin/docker-compose \
+#  && chmod +x /usr/local/bin/docker-compose
+# python
+#RUN curl -L https://github.com/docker/compose/releases/download/1.6.2/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose \
+#  && chmod +x /usr/local/bin/docker-compose
+
 # docker-machine
 
 RUN curl -L https://github.com/docker/machine/releases/download/v0.7.0/docker-machine-`uname -s`-`uname -m` > /usr/local/bin/docker-machine \
   && chmod +x /usr/local/bin/docker-machine
-
-# docker-compose
-
-# container
-RUN curl -L https://github.com/docker/compose/releases/download/1.6.2/run.sh > /usr/local/bin/docker-compose \
-  && chmod +x /usr/local/bin/docker-compose
-# python
-#RUN curl -L https://github.com/docker/compose/releases/download/1.6.2/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose \
-#  && chmod +x /usr/local/bin/docker-compose
 
 # Supervisord
 

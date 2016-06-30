@@ -21,8 +21,11 @@ services:
     privileged: true
     restart: always
     env_file: .env
+    dns: 8.8.8.8
     volumes:
       - ./jslave_home:/home/jenkins
+      - /home/moreshnikov/.docker/machine/machines/max-swarm-master:/home/jenkins/.docker/machine/machines/max-swarm-master
+#      - /home/moreshnikov/.docker/machine/machines:/home/jenkins/.docker/machine/machines
 #      - /var/run/docker.sock:/var/run/docker.sock
 #      - /var/lib/docker:/var/lib/docker
 
